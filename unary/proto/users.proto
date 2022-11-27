@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package users;
+option go_package = ".;users";
+
+// Users Service
+service Users {
+    // GetUsers
+    rpc GetUsers(GetUsersReq) returns (GetUsersRes) {};
+}
+
+// The request message for GetUsers
+message GetUsersReq {
+    UserStatus status = 1;
+}
+
+// The response message for GetUsers
+message GetUsersRes {
+    repeated User users = 1;
+}
+
+// The message for a user record
+message User {
+    string name = 1;
+    string last_name = 2;
+    int64 age = 3;
+    string email = 4;
+    string status = 5;
+}
+
+// UserStatus enum for users
+enum UserStatus {
+    //option allow_alias = true;
+    USER_STATUS_UNKNOWN = 0;
+    USER_STATUS_ACTIVE = 1;
+    USER_STATUS_SUSPENDED = 2;
+    USER_STATUS_BLOCKED = 3;
+    USER_STATUS_IGNORED = 4;
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+package documents;
+
+option go_package = ".;documents";
+
+// Documents Service
+service Documents {
+    // GetDocuments
+    rpc GetDocuments(EmptyReq) returns (stream GetDocumentsRes) {};
+}
+
+// EmptyReq message
+message EmptyReq {}
+
+// GetDocumentsRes message
+message GetDocumentsRes {
+    // Document message
+    Document document = 1;
+}
+
+// Document message
+message Document {
+    // The document name
+    string name = 1;
+    // The document type
+    string document_type = 2;
+    // The document size
+    int64 size = 3;
+}

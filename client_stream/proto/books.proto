@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package books;
+option go_package = ".;books";
+
+// Books Service
+service Books {
+    // ValidateBooks
+    rpc ValidateBooks(stream ValidationReq) returns (ValidationRes) {};
+}
+
+// The request message
+message ValidationReq {
+    // A book message
+    Book book = 1;
+}
+
+// The response message
+message ValidationRes {
+    // An array of validation errors
+    repeated ValidationError errors = 1;
+}
+
+// Book message
+message Book {
+    // The id of the book
+    string id = 1;
+    // The title of the book
+    string title = 2;
+    // The description of the book
+    string description = 3;
+    // Number of pages
+    int64 pages = 4;
+    // The author name
+    string author = 5;
+    // The year of the book;
+    int64 year = 6;
+    // The edition of the book
+    string edition = 7;
+}
+
+// Validation Error message
+message ValidationError {
+    // The book id
+    string book_id = 1;
+    // An array of errors
+    repeated string errors = 2;
+}

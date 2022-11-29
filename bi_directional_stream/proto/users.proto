@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package users;
+option go_package = ".;users";
+
+// Users Service
+service Users {
+    // CreateUser
+    rpc CreateUser(stream User) returns (stream CreateUserRes) {};
+}
+
+// The request message
+message User {
+    // User id
+    string id = 1;
+    // User name
+    string name = 2;
+    // User last name
+    string last_name = 3;
+    // User age
+    int32 age = 4;
+}
+
+// The response message
+message CreateUserRes {
+    // User id
+    string user_id = 1;
+    // Flag to indicate if the user was successfully processed
+    bool success = 2;
+    // Error message
+    repeated string errors = 3;
+}

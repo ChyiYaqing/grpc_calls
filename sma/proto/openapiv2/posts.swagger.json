@@ -1,0 +1,428 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "the package definition avoid name clashes if you need to define the same message definition under a differnt package name",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Posts"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/posts": {
+      "post": {
+        "summary": "Create Post",
+        "description": "Create a new post",
+        "operationId": "Posts_CreatePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/smaPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/smaCreatePostReq"
+            }
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      }
+    },
+    "/v1/posts/{postId}": {
+      "get": {
+        "summary": "Show Post",
+        "description": "Show a specific post",
+        "operationId": "Posts_ShowPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/smaPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postId",
+            "description": "The id for the post",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      },
+      "delete": {
+        "summary": "DeletePost",
+        "description": "Deletes a specific post",
+        "operationId": "Posts_DeletePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/smaEmptyResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postId",
+            "description": "The id for the post",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      },
+      "patch": {
+        "summary": "Update Post",
+        "description": "Updates a specific post",
+        "operationId": "Posts_UpdatePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/smaPost"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "postId",
+            "description": "The id for the post",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "description": "The updatable fields that are allowed to be updated",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/smaUpdatePost"
+            }
+          },
+          {
+            "name": "updateMask",
+            "description": "Field mask for a post",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      }
+    },
+    "/v1/users/{userId}/posts": {
+      "get": {
+        "summary": "ListPosts",
+        "description": "Returns a collection of posts for a given user",
+        "operationId": "Posts_ListPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/smaListPostsResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "the id for the user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "s",
+            "description": "Search query string",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Requested page",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "perPage",
+            "description": "Requested number of items per page\nDefault: 20\nMax: 50",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filtered collection by status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "FILTER_UNESPECIFIED",
+              "FILTER_DRAFT",
+              "FILTER_SCHEDULED",
+              "FILTER_ARCHIVED",
+              "FILTER_ACTIVE"
+            ],
+            "default": "FILTER_UNESPECIFIED"
+          }
+        ],
+        "tags": [
+          "Posts"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "smaCreatePostReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "The title for the Post"
+        },
+        "description": {
+          "type": "string",
+          "title": "The description for the Post"
+        },
+        "userId": {
+          "type": "string",
+          "title": "The id of the user who created the Post"
+        },
+        "mediaIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The collection of the Posts's media files"
+        },
+        "scheduledAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "The schedule date for the post"
+        }
+      },
+      "title": "CreatePostReq\ntype, name, number\nThe request message to create a post"
+    },
+    "smaEmptyResp": {
+      "type": "object",
+      "description": "An empty response",
+      "title": "EmptyResp"
+    },
+    "smaFilters": {
+      "type": "string",
+      "enum": [
+        "FILTER_UNESPECIFIED",
+        "FILTER_DRAFT",
+        "FILTER_SCHEDULED",
+        "FILTER_ARCHIVED",
+        "FILTER_ACTIVE"
+      ],
+      "default": "FILTER_UNESPECIFIED"
+    },
+    "smaListPostsResp": {
+      "type": "object",
+      "properties": {
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/smaPost"
+          },
+          "title": "The collection of posts"
+        },
+        "pageInfo": {
+          "$ref": "#/definitions/smaPageInfo",
+          "title": "Page info"
+        }
+      },
+      "description": "The response message to list the collection of posts for a given user",
+      "title": "ListPostsResp"
+    },
+    "smaPageInfo": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The current page"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The page size"
+        },
+        "totalItems": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The total items"
+        },
+        "totalPages": {
+          "type": "string",
+          "format": "uint64",
+          "title": "The total pages"
+        }
+      }
+    },
+    "smaPost": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "The id for the Post"
+        },
+        "title": {
+          "type": "string",
+          "title": "The title for the Post"
+        },
+        "description": {
+          "type": "string",
+          "title": "The description for the Post"
+        },
+        "userId": {
+          "type": "string",
+          "title": "The is of the user who created the Post"
+        },
+        "status": {
+          "$ref": "#/definitions/smaPostStatus",
+          "title": "The current status of the Post"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "The data when the Post was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "The data when the Post was updated"
+        }
+      },
+      "description": "The message that represents a post",
+      "title": "Post"
+    },
+    "smaPostStatus": {
+      "type": "string",
+      "enum": [
+        "POST_STATUS_UNSPECIFIED",
+        "POST_STATUS_DRAFT",
+        "POST_STATUS_SCHEDULED",
+        "POST_STATUS_ARCHIVED",
+        "POST_STATUS_ACTIVE"
+      ],
+      "default": "POST_STATUS_UNSPECIFIED",
+      "description": "Using an enum will ensure this field only accepts one of the options in the enum."
+    },
+    "smaUpdatePost": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "The title for the post"
+        },
+        "description": {
+          "type": "string",
+          "title": "The description for the post"
+        },
+        "mediaIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "The collection of the Posts's media files"
+        },
+        "scheduledAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "The schedule date for the post"
+        }
+      },
+      "description": "The message that keeps track of the permitted attributes\nto be updated for a post",
+      "title": "UpdatePost"
+    }
+  }
+}
